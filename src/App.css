@@ -1,38 +1,110 @@
-.App {
+.catalog h1 {
+  margin: 0;
+  margin-bottom: 30px;
+  padding-top: 30px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.catalog__nav {
+  display: flex;
+  align-items: baseline;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.catalog__nav p {
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.catalog__sort-list {
+  display: flex;
+  list-style: none;
+}
+
+.container-edge {
+  margin: 0 auto;
+  padding-right: 200px;
+  padding-left: 200px;
+}
+
+.product__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  list-style: none;
+}
+
+.product__card {
+  padding: 15px 30px;
+  height: 100%;
+  background-color: hsl(220, 15%, 31%);
+  box-shadow: 0 0 6px 3px #ffffff;
+  border-radius: 10%;
+}
+
+.product__card:hover {
+  background-color: hsl(220, 15%, 25%);
+}
+
+.product__card a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.product__card h2,
+.product__card p {
+  margin: 0;
+  color: #ce5a57;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.product__card h2 {
+  margin-bottom: 20px;
+}
+
+.product__card p {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.product__card img {
+  justify-self: baseline;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.product__card img + p {
+  margin-top: auto;
+  font-weight: normal;
+}
+
+.search__field {
+  padding: 8px 10px;
+  width: 100%;
+  background-color: hsl(177, 20%, 90%);
+  border:none;
+  border-radius: 5px;
+}
+
+.search__field:hover,
+.search__field:focus {
+  box-shadow: 0 0 4px 2px hsl(220, 15%, 31%);
+}
+
+.btn {
+  margin-right: 20px;
+  padding: 9px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: hsl(220, 15%, 31%);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn:active {
+  background-color: hsl(220, 15%, 25%);
 }

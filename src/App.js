@@ -1,12 +1,9 @@
-import { LoadDataComponent } from './LoadData';
-import { Sort } from './Sort';
+import { LoadDataComponent } from './load-data';
 import './App.css';
 
 function App() {
   return (
-    <div><Sort />
-      <div><LoadDataComponent /></div>
-    </div>
+      <div className="container-edge"><LoadDataComponent /></div>
 
   )
 }
