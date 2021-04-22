@@ -23,19 +23,19 @@
 
 .container-edge {
   margin: 0 auto;
-  padding-right: 200px;
-  padding-left: 200px;
+  padding-right: 300px;
+  padding-left: 300px;
 }
 
 .product__list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 50px;
+  padding: 0;
   list-style: none;
 }
 
 .product__card {
-  padding: 15px 30px;
   height: 100%;
   background-color: hsl(220, 15%, 31%);
   box-shadow: 0 0 6px 3px #ffffff;
@@ -50,6 +50,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 15px 30px;
   height: 100%;
 }
 
@@ -79,8 +80,18 @@
   font-weight: normal;
 }
 
+.search {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.search__form {
+  width: 80%;
+}
+
 .search__field {
-  padding: 8px 10px;
+  padding: 10.5px 10px;
   width: 100%;
   background-color: hsl(177, 20%, 90%);
   border:none;
@@ -104,7 +115,78 @@
   cursor: pointer;
 }
 
+.btn--active {
+  color: hsl(177, 20%, 90%);;
+  background-color: hsl(220, 15%, 25%);
+  box-shadow: 0 0 4px 3px hsl(177, 20%, 90%);
+}
+
 .btn:hover,
 .btn:active {
   background-color: hsl(220, 15%, 25%);
+}
+
+.login-btn {
+  margin-right: 0;
+  margin-left: auto;
+  background-color: hsl(192, 100%, 29%);
+}
+
+.login-btn:hover,
+.login-btn:active {
+  background-color: hsl(192, 100%, 34%);
+}
+
+.login {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: translateY(-50%);
+  width: 400px;
+  height: 500px;
+  background-color: hsl(192, 30%, 34%);
+  border-radius: 15px;
+}
+
+.login--hide {
+  display: none;
+}
+
+.login h2 {
+  margin: 0;
+  margin-bottom: 30px;
+  padding-top: 15px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.login__form label {
+  margin-bottom: 2px;
+  color: #ffffff;
+}
+
+.login__form input {
+  padding: 7px 8px;
+  margin-bottom: 15px;
+  background-color: hsl(177, 20%, 90%);;
+  border: none;
+  border-radius: 5px;
+}
+
+.login-submit {
+  width: 100%;
+  margin-top: 80px;
+}
+
+.login__form-close {
+  position: absolute;
 }
