@@ -1,7 +1,9 @@
 import React from 'react';
 import { sortByAbv, sortBySrm, sortByDefault } from "./util/util.js";
+import { checkUserName, checkUserEmail, checkUserPassword } from "./util/form-check.js"
 import { Sort } from "./components/sort.js";
 import { DataSearch } from "./components/main-search.js";
+import { ModalLogin } from "./components/modal-login.js";
 
 class LoadDataComponent extends React.Component {
   constructor(props) {
@@ -105,17 +107,38 @@ class LoadDataComponent extends React.Component {
     });
   }
 
+  handleFormCheck(evt) {
+    if (evt.target.classList.contains('login__user-name')) {
+      let userNameInputValue = null;
+      checkUserName(evt, userNameInputValue);
+    } else if (evt.target.classList.contains('login__user-email')) {
+      checkUserEmail(evt);
+    } else if (evt.target.classList.contains('login__user-password')) {
+      checkUserPassword(evt);
+    }
+  }
+
+  handleFormSubmit(evt) {
+    evt.preventDefault();
+    let body = document.querySelector('body');
+    let loginModal = document.querySelector('.login');
+    body.classList.remove('page--block-modal');
+    loginModal.classList.add('login--hide');
+  }
+
   render() {
     const { error, isLoaded, data } = this.state;
     if (error) {
-      return <div>Ошибка: {error.message}</div>;
+      return <div className="launch launch--error">Ошибка. Код ошибки: {error}</div>;
     } else if (!isLoaded) {
-      return <div>Загрузка...</div>;
+      return <div className="launch launch--loading">Загрузка...</div>;
     } else {
       return (
         <div className="catalog">
           <h1>Brewdog's DIY Dog</h1>
-          <ModalLogin />
+          <ModalLogin
+            onInput={(evt) => this.handleFormCheck(evt)}
+            onSubmit={(evt) => this.handleFormSubmit(evt)} />
           <DataSearch
             value={this.state}
             onInput={(evt) => this.handleSearchInput(evt)}
@@ -149,51 +172,3 @@ class LoadDataComponent extends React.Component {
 export {
   LoadDataComponent
 };
-
-const ModalLogin = () => {
-  return (
-    <section className="login login--hide">
-      <h2>Форма регистрации</h2>
-      <form className="login__form login__user" method="#" action="#">
-        <label htmlFor="login-user-name-id">Фамилия, имя, отчество</label>
-        <input
-          className="login__user-name"
-          type="text"
-          id="login-user-name-id"
-          name="login-user-name"
-          placeholder="ФИО"
-          required>
-        </input>
-        <label htmlFor="login-user-date-id">Дата рождения</label>
-        <input
-          className="login__user-date"
-          type="date"
-          id="login-user-date-id"
-          name="login-user-date"
-          placeholder="дд.мм.гггг"
-          required>
-        </input>
-        <label htmlFor="login-user-email-id">Электронная почта</label>
-        <input
-          className="login__user-email"
-          type="email"
-          id="login-user-email-id"
-          name="login-user-email"
-          placeholder="user@mail.com"
-          required>
-        </input>
-        <label htmlFor="login-user-password-id">Пароль</label>
-        <input
-          className="login__user-password"
-          type="password"
-          id="login-user-password-id"
-          name="login-user-password"
-          minLength="6"
-          required>
-        </input>
-        <button className="login-submit btn" type="submit">Зарегистрироваться</button>
-        <button className="login__form-close btn-close" aria-label="Закрыть модальное окно"></button>
-      </form>
-    </section>
-  )
-}

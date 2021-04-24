@@ -1,4 +1,5 @@
 import React from "react";
+import {overlayClickHandle} from "../util/util.js"
 
 class DataSearch extends React.Component {
   constructor(props) {
@@ -6,10 +7,14 @@ class DataSearch extends React.Component {
     this.props = props;
   }
 
-  handleLoginClick() {
+  handleLoginClick(evt) {
+    evt.preventDefault();
     let loginModal = document.querySelector('.login');
+    let body = document.querySelector('body');
 
     loginModal.classList.remove('login--hide');
+    body.classList.add('page--block-modal');
+    document.addEventListener('click', overlayClickHandle);
   }
 
   render() {
@@ -27,7 +32,7 @@ class DataSearch extends React.Component {
           </input>
         </form>
         <Login 
-        onClick={() => this.handleLoginClick()}/>
+        onClick={(evt) => this.handleLoginClick(evt)}/>
       </div>
     )
   }
@@ -39,7 +44,7 @@ export {
 
 const Login = (props) => {
   return (
-    <button onClick={() => { props.onClick() }}
-      className="login-btn btn" type="button">Зарегистрироваться</button>
+    <a onClick={(evt) => { props.onClick(evt) }}
+      className="login-btn btn" href="modal-login.html">Зарегистрироваться</a>
   )
 }
