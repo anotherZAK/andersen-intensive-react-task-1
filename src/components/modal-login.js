@@ -1,6 +1,6 @@
 const ModalLogin = (props) => {
   return (
-    <section className="login login--hide">
+    <section className= "login">
       <h2>Форма регистрации</h2>
       <form
         onInput={(evt) => props.onInput(evt)}

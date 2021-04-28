@@ -6,20 +6,23 @@ import { DataSearch } from "./components/main-search.js";
 import { ModalLogin } from "./components/modal-login.js";
 
 class LoadDataComponent extends React.Component {
-  constructor(props) {
+  constructor(props, keyDownHandler) {
     super(props);
+    this.keyDownHandler = keyDownHandler;
     this.state = {
       error: null,
       isLoaded: false,
       data: [],
       originalData: [],
       sort: null,
+      isLoginModalHide: true,
     }
 
     this.paginationPagesFactor = 25;
     this.sortByAbv = sortByAbv;
     this.sortBySrm = sortBySrm;
     this.sortByDefault = sortByDefault;
+    this.handleModalLogin = this.handleModalLogin.bind(this);
   }
 
   async componentDidMount() {
@@ -29,15 +32,23 @@ class LoadDataComponent extends React.Component {
     let errorMessage;
     for (let i = 1; i <= pages; i++) {
       let responseData = [];
-      response = await fetch(`https://api.punkapi.com/v2/beers?page=${i}&per_page=80`);
-      if (response.ok) {
+      try {
+        response = await fetch(`https://api.punkapi.com/v2/beers?page=${i}&per_page=80`);
         responseData[i] = await response.json();
         allData = allData.concat(...responseData[i]);
-      } else {
+      } catch (error) {
         errorMessage = response.status;
       }
     }
     if (allData.length) {
+      window.addEventListener("keydown", (evt) => {
+        if (evt.key === 'Escape') {
+          evt.preventDefault();
+          this.setState({
+            isLoginModalHide: true,
+          });
+        }
+      });
       this.setState({
         isLoaded: true,
         data: allData.slice(0, this.paginationPagesFactor),
@@ -120,48 +131,69 @@ class LoadDataComponent extends React.Component {
 
   handleFormSubmit(evt) {
     evt.preventDefault();
-    let body = document.querySelector('body');
-    let loginModal = document.querySelector('.login');
-    body.classList.remove('page--block-modal');
-    loginModal.classList.add('login--hide');
+    this.setState({
+      isLoginModalHide: true,
+    });
+  }
+
+  handleModalLogin(value) {
+    this.setState({
+      isLoginModalHide: value,
+    });
+  }
+
+  handleDocumentClick(evt) {
+    if (evt.target.classList.contains('container-edge--fixed') || evt.target.classList.contains('login__form-close')) {
+      this.handleModalLogin(true);
+    }
   }
 
   render() {
-    const { error, isLoaded, data } = this.state;
+    const { error, isLoaded, data, isLoginModalHide } = this.state;
     if (error) {
       return <div className="launch launch--error">Ошибка. Код ошибки: {error}</div>;
     } else if (!isLoaded) {
       return <div className="launch launch--loading">Загрузка...</div>;
     } else {
       return (
-        <div className="catalog">
-          <h1>Brewdog's DIY Dog</h1>
-          <ModalLogin
-            onInput={(evt) => this.handleFormCheck(evt)}
-            onSubmit={(evt) => this.handleFormSubmit(evt)} />
-          <DataSearch
-            value={this.state}
-            onInput={(evt) => this.handleSearchInput(evt)}
-          />
-          <Sort
-            value={this.state}
-            onClick={(evt) => this.handleSortClick(evt)} />
-          <div className="product">
-            <ul className="product__list">
-              {data.map(item => (
-                <li className="product__item" key={item.id} >
-                  <div className="product__card">
-                    <a href="https://punkapi.com" target="_blank" rel="noreferrer">
-                      <h2>{item.name}</h2>
-                      <p>Крепость пива: {item.abv}</p>
-                      <p>Цветность пива: {item.srm}</p>
-                      <img src={item.image_url} width='15%' height="auto" alt={item.name} />
-                      <p>{item.description}</p>
-                    </a>
-                  </div>
-                </li>
-              ))}
-            </ul>
+        <div
+          onClick={(evt) => this.handleDocumentClick(evt)}
+          className={isLoginModalHide ? "container-edge" : "container-edge container-edge--fixed"}>
+          <div className="catalog">
+            <h1>Brewdog's DIY Dog</h1>
+            {
+              !isLoginModalHide &&
+              <ModalLogin
+                value={this.state}
+                onInput={(evt) => this.handleFormCheck(evt)}
+                onSubmit={(evt) => this.handleFormSubmit(evt)}
+              />
+            }
+            <DataSearch
+              value={this.state}
+              onInput={(evt) => this.handleSearchInput(evt)}
+              modalLogin={this.handleModalLogin}
+            />
+            <Sort
+              value={this.state}
+              onClick={(evt) => this.handleSortClick(evt)} />
+            <div className="product">
+              <ul className="product__list">
+                {data.map(item => (
+                  <li className="product__item" key={item.id} >
+                    <div className="product__card">
+                      <a href="https://punkapi.com" target="_blank" rel="noreferrer">
+                        <h2>{item.name}</h2>
+                        <p>Крепость пива: {item.abv}</p>
+                        <p>Цветность пива: {item.srm}</p>
+                        <img src={item.image_url} width='15%' height="auto" alt={item.name} />
+                        <p>{item.description}</p>
+                      </a>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       );

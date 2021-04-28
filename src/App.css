@@ -1,12 +1,12 @@
-.page--block-modal {
-  height: 100%;
-  overflow: hidden;
+.container-edge--fixed {
+  position: fixed;
 }
 
-.page--block-modal::after {
+.container-edge--fixed::after {
   position: absolute;
   content: "";
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: #020e14;
@@ -186,10 +186,6 @@
   height: 500px;
   background-color: hsl(192, 30%, 34%);
   border-radius: 15px;
-}
-
-.login--hide {
-  display: none;
 }
 
 .login h2 {
